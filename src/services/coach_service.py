@@ -51,7 +51,7 @@ class CoachService:
 
         # Initialize matching engine components
         if data_dir is None:
-            data_dir = Path(__file__).parent.parent / "data" / "researcher_db"
+            data_dir = Path(__file__).parent.parent / "matching_engine" / "data"
 
         self.data_loader = DataLoader(str(data_dir))
         self.matcher = ResearcherMatcher()
