@@ -308,41 +308,6 @@ Returns top k×5 pieces of evidence (50 chunks for k=10).
 
 ---
 
-## Support & Documentation
-
-- **Setup Guide:** See `INSTALLATION.md`
-- **Technical Details:** See `WORKFLOW_FIX_SUMMARY.md`
-- **Issues:** Check troubleshooting section above
-
----
-
-## Version History
-
-**v2.2 (Dec 26, 2024)** - Multi-Perspective Evaluation Edition
-- Natural language criteria input (no JSON required)
-- Multiple evaluation frameworks (Solicitation + NSF + Custom)
-- AI-powered criteria parsing (text → structured RubricCriterion)
-- Enhanced results display with multiple tabs
-- Fixed JSON import scoping issue
-
-**v2.1 (Dec 11, 2024)** - Workflow-Optimized Edition
-- Added Table Hunter & Proper Noun Hunter to retrieval
-- Implemented Forensic Evidence Extraction (zero-temp)
-- Added Negative Constraints to prevent hallucinations
-- 87.5% verification test pass rate
-
-**v2.0 (Dec 11, 2024)** - OCR-Enabled Edition
-- Added OCR for embedded DOCX images
-- Native DOCX table support
-- Extracted 13,190 characters from 13 table images
-
-**v1.0 (Nov 22, 2024)** - Initial Release
-- Basic RAG-based evaluation
-- Team expertise analysis
-- Markdown report generation
-
----
-
 ## License
 
 Proprietary - Texas State University, CADS Department
