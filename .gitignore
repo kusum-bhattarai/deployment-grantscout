@@ -69,4 +69,4 @@ output/*.txt
 # Only ignore root-level data/ and temp_uploads/ (not src/data/)
 /data/
 /temp_uploads/
-src/data/
+src/data/researcher_db/

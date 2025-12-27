@@ -1304,9 +1304,14 @@ Respond ONLY with valid JSON.
 
         return round(probability, 1)
 
-    def run_full_evaluation(self) -> Dict:
+    def run_full_evaluation(self, custom_criteria: List[RubricCriterion] = None) -> Dict:
         """
         Execute the complete evaluation pipeline.
+
+        Args:
+            custom_criteria: Optional pre-defined criteria (NSF or custom rubric).
+                           If provided, skips Step 1 (extract_rubric) and uses these criteria instead.
+                           If None, extracts criteria from solicitation (default behavior).
 
         Returns: Comprehensive evaluation report data
         """
@@ -1324,8 +1329,14 @@ Respond ONLY with valid JSON.
         print("\n📍 Step 0: Detecting proposal focus...")
         self.detect_proposal_priority()
 
-        # Step 1: Extract rubric
-        rubric = self.extract_rubric()
+        # Step 1: Extract or use provided rubric
+        if custom_criteria:
+            print(f"\n📋 Step 1: Using pre-defined evaluation criteria ({len(custom_criteria)} criteria)")
+            for i, criterion in enumerate(custom_criteria, 1):
+                print(f"   {i}. {criterion.title} ({criterion.weight_points} points)")
+            rubric = custom_criteria
+        else:
+            rubric = self.extract_rubric()
 
         # Step 2: Evaluate each criterion
         all_results = []

@@ -1,7 +1,7 @@
 # GrantScout: AI-Powered Grant Proposal Coach
 
-**Version 2.1** - Workflow-Optimized Edition
-**Last Updated:** December 11, 2025
+**Version 2.2** - Multi-Perspective Evaluation Edition
+**Last Updated:** December 26, 2024
 
 ---
 
@@ -11,6 +11,8 @@ GrantScout is an AI-powered grant proposal evaluation and coaching tool that pro
 
 ### Key Features
 
+- **Multiple Evaluation Perspectives:** Evaluate proposals using solicitation criteria PLUS optional NSF or custom rubrics
+- **Natural Language Criteria Input:** Describe evaluation criteria in plain text - AI converts to structured format
 - **OCR-Enabled Document Processing:** Automatically extracts text from embedded table images in DOCX files
 - **Forensic Evidence Extraction:** Identifies exact metrics, data points, and entities in your proposal
 - **Evidence-Based Coaching:** Provides actionable recommendations based on what actually exists in your narrative
@@ -54,25 +56,84 @@ Navigate to http://localhost:8501 in your browser.
 
 ### Step 1: Upload Documents
 
-- **Funding Opportunity:** Upload the grant solicitation (DOCX or PDF)
-- **Your Narrative:** Upload your grant proposal narrative (DOCX preferred for table extraction)
-- **Team CVs (Optional):** Upload team member CVs for expertise analysis
+- **Solicitation:** Upload the grant solicitation (DOCX or PDF)
+- **Narrative:** Upload your grant proposal narrative (DOCX preferred for table extraction)
+- **Team Information (Optional):** Upload faculty files or URLs for expertise analysis
 
-### Step 2: Run Analysis
+### Step 2: Choose Evaluation Criteria (Optional)
 
-Click "Run Evaluation" and wait for the analysis to complete (typically 30-60 seconds).
+**Primary Evaluation** (Always):
+- Automatically extracts criteria from your solicitation document
 
-### Step 3: Review Report
+**Additional Perspectives** (Optional):
+- ☑️ **NSF Merit Review Criteria**: Adds evaluation using Intellectual Merit + Broader Impacts
+- ☑️ **Custom Rubric**: Describe your own criteria in plain text
 
-The report includes:
+**Example Custom Criteria:**
+```
+Evaluate proposals on:
+1. Innovation (40%) - How novel is the approach?
+2. Team expertise (30%) - Right qualifications?
+3. Feasibility (20%) - Realistic timeline?
+4. Impact (10%) - Expected outcomes?
+```
+
+### Step 3: Run Analysis
+
+Click "Analyze Proposal" and wait for the analysis to complete (typically 30-90 seconds).
+
+### Step 4: Review Reports
+
+**Primary Report** (Solicitation Criteria):
 - **Executive Dashboard:** Win probability and overall assessment
 - **Deep-Dive Criterion Analysis:** Evidence-based coaching for each criterion
 - **Team Alignment Matrix:** Which team members align with which requirements
 - **Prioritized Action Plan:** Top recommendations ranked by impact
 
+**Additional Perspectives** (if selected):
+- Separate tabs for NSF and/or Custom evaluations
+- Compare win probabilities across different frameworks
+- Identify strengths and weaknesses from multiple angles
+
 ---
 
-## What's New in Version 2.1
+## What's New in Version 2.2
+
+### Multi-Perspective Evaluation System:
+
+**1. Natural Language Criteria Input**
+- Describe evaluation criteria in plain English (no JSON required!)
+- AI automatically structures and validates criteria
+- Converts text → RubricCriterion objects with weights, keywords, descriptions
+- Example: "Evaluate on Innovation (40%), Team (30%), Feasibility (30%)"
+
+**2. Multiple Evaluation Frameworks**
+- **Primary**: Always evaluates using solicitation criteria
+- **NSF**: Optionally add NSF Merit Review perspective (Intellectual Merit + Broader Impacts)
+- **Custom**: Optionally add your own criteria via natural language
+- Compare results across multiple evaluation frameworks
+
+**3. Enhanced Results Display**
+- Primary report shows solicitation-based evaluation
+- Additional tabs for each supplementary evaluation (NSF, Custom)
+- Compare win probabilities across frameworks
+- Identify proposal strengths/weaknesses from multiple angles
+
+### Technical Improvements:
+
+**Fixed:**
+- ✅ Resolved JSON import scoping issue
+- ✅ Improved user experience (text input vs JSON upload)
+- ✅ Better error messages for criteria parsing
+
+**Result:**
+- ✅ No technical knowledge required for custom rubrics
+- ✅ Flexible, user-friendly criteria definition
+- ✅ Comprehensive multi-perspective analysis
+
+---
+
+## What's in Version 2.1
 
 ### Three Critical Workflow Improvements:
 
@@ -110,13 +171,21 @@ GrantScout/
 ├── src/
 │   ├── ingester.py             # Document parsing with OCR
 │   ├── evaluator.py            # Evaluation engine (workflow-optimized)
-│   └── reporter.py             # Report generation
+│   ├── reporter.py             # Report generation
+│   └── data/
+│       ├── nsf_criteria.py     # Hardcoded NSF criteria
+│       ├── rubric_utils.py     # JSON rubric validation
+│       └── criteria_parser.py  # Natural language → RubricCriterion
+├── docs/
+│   ├── EVALUATION_CRITERIA_GUIDE.md  # Comprehensive criteria guide
+│   └── CRITERIA_QUICK_REFERENCE.md   # Quick reference
 ├── temp_uploads/               # Uploaded files
 ├── data/                       # Generated reports
 ├── test_extraction.py          # Diagnostic test
 ├── test_workflow_fix.py        # Workflow verification
 ├── verify_ocr_fix.py           # OCR verification
 ├── INSTALLATION.md             # Detailed setup guide
+├── IMPLEMENTATION_SUMMARY.md   # Technical implementation details
 └── WORKFLOW_FIX_SUMMARY.md     # Technical documentation
 ```
 
@@ -249,18 +318,25 @@ Returns top k×5 pieces of evidence (50 chunks for k=10).
 
 ## Version History
 
-**v2.1 (Dec 11, 2025)** - Workflow-Optimized Edition
+**v2.2 (Dec 26, 2024)** - Multi-Perspective Evaluation Edition
+- Natural language criteria input (no JSON required)
+- Multiple evaluation frameworks (Solicitation + NSF + Custom)
+- AI-powered criteria parsing (text → structured RubricCriterion)
+- Enhanced results display with multiple tabs
+- Fixed JSON import scoping issue
+
+**v2.1 (Dec 11, 2024)** - Workflow-Optimized Edition
 - Added Table Hunter & Proper Noun Hunter to retrieval
 - Implemented Forensic Evidence Extraction (zero-temp)
 - Added Negative Constraints to prevent hallucinations
 - 87.5% verification test pass rate
 
-**v2.0 (Dec 11, 2025)** - OCR-Enabled Edition
+**v2.0 (Dec 11, 2024)** - OCR-Enabled Edition
 - Added OCR for embedded DOCX images
 - Native DOCX table support
 - Extracted 13,190 characters from 13 table images
 
-**v1.0 (Nov 22, 2025)** - Initial Release
+**v1.0 (Nov 22, 2024)** - Initial Release
 - Basic RAG-based evaluation
 - Team expertise analysis
 - Markdown report generation

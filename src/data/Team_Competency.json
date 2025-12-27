@@ -1,0 +1,68 @@
+{
+  "team_members": [
+    {
+      "name": "Dr. Tahir Ekin",
+      "email": "t_e18@txstate.edu",
+      "title": "Director, Jerry Fields Endowed Chair in Business Analytics, Professor",
+      "department": "Dept of Information Systems & Analytics",
+      "institution": "Texas State University",
+      "research_interests": [],
+      "education": [
+        {
+          "degree": "PhD",
+          "field": "Not specified",
+          "institution": "George Washington University",
+          "year": "Not specified"
+        },
+        {
+          "degree": "BSIE",
+          "field": "Not specified",
+          "institution": "Bilkent University",
+          "year": "Not specified"
+        }
+      ],
+      "publications": [
+        "Adversarial Outlier Detection for Health Care Fraud",
+        "Using a Bayesian Belief Network to detect healthcare fraud",
+        "Augmented Probability Simulation Methods for Sequential Games",
+        "Augmented simulation methods for discrete stochastic optimization with recourse",
+        "Manipulating Hidden Markov Model Inferences by Poisoning Batch Data"
+      ],
+      "expertise_keywords": [],
+      "notable_achievements": [
+        "Jerry Fields Endowed Chair in Business Analytics",
+        "Steven R. “Steve” Gregg Excellence Endowed Professor",
+        "Presidential Fellow",
+        "Brandon Dee Roberts Excellence Endowed Professor"
+      ],
+      "source_url": "https://api.hb2504.txst.edu/py/getvita.py?plid=x464568d149ff",
+      "source_type": "PDF_VITA"
+    },
+    {
+      "name": "Faculty Profiles",
+      "email": "lc27@txstate.edu",
+      "title": "Professor",
+      "department": "Not specified",
+      "institution": "Not specified",
+      "research_interests": [],
+      "education": [],
+      "publications": [],
+      "expertise_keywords": [],
+      "notable_achievements": [
+        "Justice, Sean Bradley, Assaf, Lori Czop.\n\tEPK-2 Exploring PK-2 Teachers’ Ability to Identify CT Precursors and Implement Learning Activities that Strengthen Computer Science in Early Childhood Classrooms.,\n\tLBJ Institute,\n\tSTEM-For-All Partnership within the LBJ Institute for STEM Education and Research,\n\t$50000.\n(Funded: June 1, 2024 - July 1, 2024).\n\nGrant.",
+        "Justice, Sean Bradley (Principal), Assaf, Lori Czop (Co-Principal).\n\tEPK-2: Exploring PK-2 Teachers' Abilities to Identify CT Precursors and Implement Learning Activities that Strengthen Computer Science in Early Childhood Classrooms,\n\tNational Science Foundation,\n\tFederal,\n\t$450000.\n(Submitted: November 2019, Funded: September 2020 - August 2024).\n\nGrant.",
+        "Assaf, Lori Czop, King, Jeffry Todd.\n\tContinuous Improvement: Supporting Teacher Candidates' Certification Exam Prep,\n\tCharles Butt Foundation,\n\tPrivate / Foundation / Corporate,\n\t$5000.\n(Funded: January 15, 2025 - Present).\n\nGrant.",
+        "Assaf, Lori Czop (Principal), King, Jeffry Todd (Co-Principal).\n\tCharles Butt Full Partnership Addendum- 4 new programs added to Charles Butt Scholarship,\n\tCharles Butt Foundation,\n\tPrivate / Foundation / Corporate,\n\t$24000.\n(Submitted: June 15, 2024, Funded: September 15, 2024 - April 15, 2025).\n\nGrant.",
+        "Justice, Sean Bradley (Principal), Assaf, Lori Czop (Co-Principal).\n\tSummer Computing for Teachers, 2024,\n\tSTEM for ALL and LBJ Institute for STEM Education,\n\tTexas State University,\n\t$50000.\n(Submitted: June 1, 2024, Funded: June 1, 2024 - July 1, 2024).\n\nGrant."
+      ],
+      "source_url": "https://faculty.txst.edu/profile/1921178",
+      "source_type": "HTML_PROFILE"
+    }
+  ],
+  "metadata": {
+    "total_members": 2,
+    "successful_fetches": 2,
+    "failed_fetches": 0,
+    "timestamp": "2025-11-22 14:00:06"
+  }
+}

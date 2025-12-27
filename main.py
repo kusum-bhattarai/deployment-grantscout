@@ -73,6 +73,10 @@ def initialize_session_state():
         st.session_state.report_data = None
     if 'report_markdown' not in st.session_state:
         st.session_state.report_markdown = None
+    if 'additional_reports' not in st.session_state:
+        st.session_state.additional_reports = []
+    if 'additional_markdowns' not in st.session_state:
+        st.session_state.additional_markdowns = []
     if 'augmentation_complete' not in st.session_state:
         st.session_state.augmentation_complete = False
     if 'augmentation_report' not in st.session_state:
@@ -207,14 +211,88 @@ def main():
 
         st.divider()
 
+        # New Section: Additional Evaluation Criteria
+        st.header("Step 3: Additional Evaluation Criteria (Optional)")
+        st.caption("The proposal will always be evaluated using criteria from the solicitation. Optionally add additional evaluation perspectives below.")
+
+        st.markdown('<div class="upload-section">', unsafe_allow_html=True)
+
+        st.info(
+            "**Primary Evaluation**: Criteria will be automatically extracted from your solicitation document.\n\n"
+            "**Optional**: Check the boxes below to also evaluate using standardized or custom criteria for additional insights."
+        )
+
+        # Toggle for NSF criteria
+        use_nsf_criteria = st.checkbox(
+            "Also evaluate using NSF Merit Review Criteria",
+            value=False,
+            help="Adds evaluation based on NSF's Intellectual Merit and Broader Impacts criteria",
+            key="use_nsf_criteria"
+        )
+
+        if use_nsf_criteria:
+            st.caption(
+                "✓ Will evaluate using:\n"
+                "  • **Intellectual Merit** (50%): Potential to advance knowledge\n"
+                "  • **Broader Impacts** (50%): Potential to benefit society"
+            )
+
+        # Toggle for custom rubric
+        use_custom_rubric = st.checkbox(
+            "Also evaluate using a Custom Rubric",
+            value=False,
+            help="Describe your own evaluation criteria in plain text",
+            key="use_custom_rubric"
+        )
+
+        custom_rubric_text = None
+        if use_custom_rubric:
+            st.markdown("**Describe your evaluation criteria in plain text:**")
+            st.caption(
+                "Example: 'Evaluate proposals on: 1) Innovation (40%), 2) Team expertise (30%), "
+                "3) Feasibility (20%), and 4) Budget justification (10%)'"
+            )
+
+            custom_rubric_text = st.text_area(
+                "Custom Evaluation Criteria",
+                height=150,
+                placeholder=(
+                    "Example:\n\n"
+                    "I want to evaluate proposals based on:\n"
+                    "1. Scientific Merit (35%) - How innovative is the research?\n"
+                    "2. Team Qualifications (25%) - Does the team have the right expertise?\n"
+                    "3. Implementation Plan (25%) - Is the timeline realistic?\n"
+                    "4. Broader Impact (15%) - What's the societal benefit?\n\n"
+                    "You can describe criteria in any format - bullet points, numbered list, or paragraphs."
+                ),
+                key="custom_criteria_text",
+                label_visibility="collapsed"
+            )
+
+            if custom_rubric_text and custom_rubric_text.strip():
+                st.success(f"✓ Custom criteria defined ({len(custom_rubric_text)} characters)")
+            else:
+                st.warning("⚠️ Please describe your evaluation criteria above")
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        st.divider()
+
         # Analyze Button
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
+            # Disable button if required files are missing
+            is_disabled = not (solicitation_file and narrative_file)
+
+            # Also disable if custom rubric checkbox is checked but no text provided
+            if use_custom_rubric and (not custom_rubric_text or not custom_rubric_text.strip()):
+                is_disabled = True
+
             analyze_button = st.button(
                 "🚀 Analyze Proposal",
                 type="primary",
                 use_container_width=True,
-                disabled=not (solicitation_file and narrative_file)
+                disabled=is_disabled
             )
 
         # Processing Logic
@@ -265,23 +343,82 @@ def main():
                         "narrative": narrative_path
                     })
 
-                    # Step 3: Run Evaluation
-                    status_text.text("🧠 Analyzing proposal competencies...")
-                    progress_bar.progress(60)
+                    # Step 2.5: Prepare Additional Evaluation Criteria
+                    additional_evaluations = []
+
+                    # Load NSF criteria if requested
+                    if use_nsf_criteria:
+                        status_text.text("📋 Loading NSF Merit Review Criteria...")
+                        import sys
+                        sys.path.append('src/data')
+                        from nsf_criteria import get_nsf_merit_criteria
+                        nsf_criteria = get_nsf_merit_criteria()
+                        additional_evaluations.append(("NSF Merit Review", nsf_criteria))
+
+                    # Load custom rubric if requested
+                    if use_custom_rubric and custom_rubric_text and custom_rubric_text.strip():
+                        status_text.text("📋 Parsing custom criteria from text...")
+                        import sys
+                        sys.path.append('src/data')
+                        from criteria_parser import parse_natural_language_criteria
+
+                        try:
+                            custom_criteria = parse_natural_language_criteria(custom_rubric_text)
+                            rubric_name = "Custom Rubric"
+                            additional_evaluations.append((rubric_name, custom_criteria))
+                            st.info(f"✓ Parsed custom criteria: {len(custom_criteria)} criteria defined")
+                        except ValueError as e:
+                            st.error(f"Failed to parse custom criteria: {str(e)}")
+                            st.info("Try being more specific about the criteria you want, including weights/percentages if possible.")
+                            raise
+                        except Exception as e:
+                            st.error(f"Unexpected error parsing criteria: {str(e)}")
+                            raise
+
+                    # Step 3: Run Primary Evaluation (from solicitation)
+                    status_text.text("🧠 Running primary evaluation (solicitation criteria)...")
+                    progress_bar.progress(50)
 
                     engine = CompetencyEngine(ingester=ingester, team_data=team_data)
-                    report_data = engine.run_full_evaluation()
+                    primary_report = engine.run_full_evaluation()  # Extract from solicitation
 
-                    # Step 4: Generate Report
-                    status_text.text("📄 Generating coaching report...")
+                    # Step 3.5: Run Additional Evaluations
+                    additional_reports = []
+                    if additional_evaluations:
+                        for i, (eval_name, criteria) in enumerate(additional_evaluations):
+                            progress = 50 + (10 * (i + 1))
+                            status_text.text(f"🧠 Running additional evaluation: {eval_name}...")
+                            progress_bar.progress(min(progress, 70))
+
+                            # Create new engine instance for each evaluation
+                            engine = CompetencyEngine(ingester=ingester, team_data=team_data)
+                            additional_report = engine.run_full_evaluation(custom_criteria=criteria)
+                            additional_reports.append({
+                                "name": eval_name,
+                                "report": additional_report
+                            })
+
+                    # Step 4: Generate Reports
+                    status_text.text("📄 Generating coaching reports...")
                     progress_bar.progress(80)
 
                     reporter = ReportGenerator()
-                    report_markdown = reporter.generate_markdown_report(report_data)
+                    primary_markdown = reporter.generate_markdown_report(primary_report)
+
+                    # Generate markdown for additional reports
+                    additional_markdowns = []
+                    for additional in additional_reports:
+                        md = reporter.generate_markdown_report(additional["report"])
+                        additional_markdowns.append({
+                            "name": additional["name"],
+                            "markdown": md
+                        })
 
                     # Save to session state
-                    st.session_state.report_data = report_data
-                    st.session_state.report_markdown = report_markdown
+                    st.session_state.report_data = primary_report
+                    st.session_state.report_markdown = primary_markdown
+                    st.session_state.additional_reports = additional_reports
+                    st.session_state.additional_markdowns = additional_markdowns
                     st.session_state.evaluation_complete = True
 
                     progress_bar.progress(100)
@@ -348,8 +485,45 @@ def main():
             st.divider()
 
             # Full Markdown Report
-            st.header("📄 Detailed Coaching Report")
+            st.header("📄 Detailed Coaching Report (Solicitation Criteria)")
             st.markdown(st.session_state.report_markdown)
+
+            # Additional Evaluation Reports
+            if hasattr(st.session_state, 'additional_markdowns') and st.session_state.additional_markdowns:
+                st.divider()
+                st.header("📋 Additional Evaluation Perspectives")
+
+                # Create tabs for each additional evaluation
+                additional_tabs = st.tabs([item["name"] for item in st.session_state.additional_markdowns])
+
+                for i, additional_tab in enumerate(additional_tabs):
+                    with additional_tab:
+                        additional_data = st.session_state.additional_reports[i]["report"]
+                        additional_name = st.session_state.additional_markdowns[i]["name"]
+
+                        # Show metrics for this evaluation
+                        st.subheader(f"{additional_name} - Summary")
+
+                        col1, col2, col3 = st.columns(3)
+                        with col1:
+                            win_prob = additional_data.get("win_probability", 0)
+                            if win_prob >= 80:
+                                st.metric("Win Probability", f"{win_prob}%", delta="Strong")
+                            elif win_prob >= 60:
+                                st.metric("Win Probability", f"{win_prob}%", delta="Good")
+                            else:
+                                st.metric("Win Probability", f"{win_prob}%", delta="Needs Work")
+
+                        with col2:
+                            st.metric("Criteria Evaluated", additional_data.get("total_criteria", 0))
+
+                        with col3:
+                            st.metric("Team Members", additional_data.get("team_summary", {}).get("total_members", 0))
+
+                        st.divider()
+
+                        # Show full report
+                        st.markdown(st.session_state.additional_markdowns[i]["markdown"])
 
     # ==================== TAB 3: TEAM AUGMENTATION ====================
     with tabs[2]:

@@ -1,0 +1,96 @@
+{
+  "rubric_name": "Example Grant Evaluation Rubric",
+  "rubric_description": "A sample rubric for evaluating research grant proposals",
+  "criteria": [
+    {
+      "id": "project_significance",
+      "title": "Project Significance and Impact",
+      "description": "Evaluates the potential significance and real-world impact of the proposed project. Strong proposals clearly articulate the problem being addressed, demonstrate its importance to the field and society, and explain how the project will make a meaningful contribution. Look for evidence of need, potential beneficiaries, and expected outcomes.",
+      "weight_points": 25,
+      "keywords": [
+        "significance",
+        "impact",
+        "importance",
+        "contribution",
+        "problem statement",
+        "need",
+        "beneficiaries",
+        "outcomes",
+        "real-world application"
+      ],
+      "compliance_requirements": []
+    },
+    {
+      "id": "innovation_approach",
+      "title": "Innovation and Approach",
+      "description": "Assesses the novelty and creativity of the proposed approach. Strong proposals demonstrate innovative thinking, whether through new methodologies, technologies, or applications of existing approaches to new contexts. The approach should be well-justified and appropriately rigorous for the project goals.",
+      "weight_points": 25,
+      "keywords": [
+        "innovation",
+        "novel",
+        "creative",
+        "methodology",
+        "approach",
+        "research design",
+        "methods",
+        "technology",
+        "rigor"
+      ],
+      "compliance_requirements": []
+    },
+    {
+      "id": "team_qualifications",
+      "title": "Team Qualifications and Capacity",
+      "description": "Evaluates whether the project team has the necessary expertise, experience, and resources to successfully execute the proposed work. Strong proposals highlight relevant qualifications, prior accomplishments, complementary skills across team members, and access to required facilities or partnerships.",
+      "weight_points": 20,
+      "keywords": [
+        "qualifications",
+        "expertise",
+        "experience",
+        "team",
+        "personnel",
+        "capacity",
+        "prior work",
+        "track record",
+        "facilities",
+        "partnerships"
+      ],
+      "compliance_requirements": []
+    },
+    {
+      "id": "implementation_plan",
+      "title": "Implementation Plan and Feasibility",
+      "description": "Assesses the quality and feasibility of the implementation plan. Strong proposals include clear timelines, realistic milestones, well-defined roles and responsibilities, and evidence-based strategies. The plan should demonstrate that the project is achievable within the proposed timeframe and budget.",
+      "weight_points": 20,
+      "keywords": [
+        "implementation",
+        "plan",
+        "timeline",
+        "milestones",
+        "feasibility",
+        "schedule",
+        "deliverables",
+        "work plan",
+        "project management"
+      ],
+      "compliance_requirements": []
+    },
+    {
+      "id": "evaluation_sustainability",
+      "title": "Evaluation and Sustainability",
+      "description": "Evaluates the project's evaluation plan and sustainability strategy. Strong proposals include clear metrics for success, rigorous evaluation methodologies, and realistic plans for sustaining project outcomes beyond the funding period. Look for evidence of thoughtful measurement approaches and long-term vision.",
+      "weight_points": 10,
+      "keywords": [
+        "evaluation",
+        "assessment",
+        "metrics",
+        "sustainability",
+        "long-term",
+        "outcomes measurement",
+        "success indicators",
+        "continuation plan"
+      ],
+      "compliance_requirements": []
+    }
+  ]
+}
